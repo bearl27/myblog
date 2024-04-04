@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <div class="post">
+            <h1 class='title'>{{ post.title }}</h1>
+            <small>Posted at{{ post.posted_date }}</small>
+            <p>{{ post.intro }}</p>
+            <p>{{ post.content }}</p>
+            <hr />
+        </div>
+
+        <!-- Comments -->
+        <div class= "comments">
+            <h2 class = "title">コメント</h2>
+            {% for comment in post.comments.all %}
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{ comment.name }}</strong>
+                            <br>
+                            {{ comment.body }}
+                            <br>
+                            <small>{{ comment.posted_date }} {{ comment.author}}</small>
+                        </p>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div class="notification">
+                <p>コメントはまだありません</p>
+            </div>
+            {% endfor %}
+        </div>
+        <hr />
+        <div class="add_comments">
+            <h2 class = "title">コメント追加</h2>
+            <form action="." method="post">
+                {% csrf_token %} <!-- Cross Site Request Forgery -->
+                {{ form.as_p}}
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-danger">送信</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+{% endblock %}
